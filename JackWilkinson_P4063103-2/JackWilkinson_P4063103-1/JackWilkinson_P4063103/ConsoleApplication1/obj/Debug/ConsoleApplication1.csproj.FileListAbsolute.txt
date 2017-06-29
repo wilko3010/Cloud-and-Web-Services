@@ -1,0 +1,15 @@
+D:\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+D:\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+D:\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+D:\ConsoleApplication1\bin\Debug\EntityFramework.dll
+D:\ConsoleApplication1\bin\Debug\EntityFramework.SqlServer.dll
+D:\ConsoleApplication1\bin\Debug\HebbracoModel.dll
+D:\ConsoleApplication1\bin\Debug\HebbracoModel.pdb
+D:\ConsoleApplication1\bin\Debug\EntityFramework.xml
+D:\ConsoleApplication1\bin\Debug\EntityFramework.SqlServer.xml
+D:\ConsoleApplication1\obj\Debug\ConsoleApplication1.csprojResolveAssemblyReference.cache
+D:\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+D:\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
+U:\CloudAndWebServicesICA1\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+U:\CloudAndWebServicesICA1\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+U:\CloudAndWebServicesICA1\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb

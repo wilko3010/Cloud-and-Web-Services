@@ -1,0 +1,36 @@
+﻿@model IEnumerable<ICATask4.Models.skillDTO>
+
+@{
+    ViewBag.Title = "Skills";
+}
+
+<h2>Skills</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.skillCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.staffName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.skillCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.staffName)
+        </td>
+        <td>
+        </td>
+    </tr>
+}
+
+</table>

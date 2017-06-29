@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business units and staff list</title>
+   <style>
+       table td { padding:10px,10px,10px,10px}
+   </style>
+    <link href="Content/Site.css" rel="stylesheet" />
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <script src="Scripts/modernizr-2.6.2.js"></script>
+    <script>
+        //These variables will send XML requests for the staff, business unit and detail class
+        var buhttp = new XMLHttpRequest();
+        var staffhttp = new XMLHttpRequest();
+        var staffDeetshttp = new XMLHttpRequest();
+        var buurl = "http://localhost:33103/api/BusinessUnitT2";
+        var staffurl = "http://localhost:33103/api/Staff/StaffBBU/";
+        var staffDeetsurl = "http://localhost:33103/api/Staff/StaffInfo/";
+
+
+        function start() {
+            //this method will set up business units on the main page of the application
+            document.getElementById("detaillist").style.visibility = "hidden";
+            document.getElementById("detail").style.visibility = "hidden";
+            buhttp.onreadystatechange = GetBuList;
+            buhttp.open("GET", buurl);
+            buhttp.send();
+        }
+
+
+
+        function GetBuList() {
+            //this method will check the ready state of the business units 
+            //and if the ready state is okay, the method will retreive the 
+            //business units from the web api and display them
+            if (buhttp.readyState == 4 && buhttp.status == 200) {
+                var buisinessUnits = JSON.parse(buhttp.responseText);
+                displayItemsInBuList(buisinessUnits);
+            }
+        }
+        //this method will display the busines units in a list which is formatted in this method
+        function displayItemsInBuList(arr) {
+            // grab hold of the table object
+            var table = document.getElementById("bulist");
+            // Empty the table tag
+            table.innerHTML = "";
+            // walk down the LIST array
+            for (var i = 0; i < arr.length; i++) {
+                // insert a row in the next space available
+                var row = table.insertRow(0);
+                // insert td within that row
+                var cell1 = row.insertCell(0);
+                // insert another td withing the same row
+                var cell2 = row.insertCell(1);
+                cell1.innerHTML = arr[i].title;
+                // populate the first td with data from the array
+                var id = arr[i].businessUnitCode;
+                // populate the second row with a link
+                cell2.innerHTML = "&nbsp&nbsp&nbsp&nbsp<a href='#'     id='" + id + "' " + " >List Staff</a>";
+                // bind this new link to a delete method
+                document.getElementById(id).onclick = getStaff;
+            }
+        }
+
+
+        function getStaff(e) {
+            //this method will request the details for a specific member of staff 
+            //by checking if the ready state is okay
+            var detailUrl = staffurl + e.target.id;
+            staffhttp.onreadystatechange = requestDetail;
+            staffhttp.open("GET", detailUrl);
+            staffhttp.send();
+
+        }
+
+        function requestDetail() {
+            //this method will erquest the details for a specific member of staff 
+            //if the ready state is okay
+            if (staffhttp.readyState == 4 && staffhttp.status == 200) {
+                var staffList = JSON.parse(staffhttp.responseText);
+                displayDetail(staffList);
+            }
+        }
+        //this method will display all of the staff that are in the desired business unit
+        function displayDetail(arr) {
+            // grab hold of the table object
+            document.getElementById("detaillist").style.visibility = "visible";
+            var table = document.getElementById("stafflist");
+            table.style.visibility = "visible";
+
+            // Empty the table tag
+            table.innerHTML = "";
+            // walk down the LIST array
+            for (var i = 0; i < arr.length; i++) {
+                // insert a row in the next space available
+                var row = table.insertRow(0);
+                // insert td within that row
+                var cell1 = row.insertCell(0);
+                // insert another td withing the same row
+                var cell2 = row.insertCell(1);
+                cell1.innerHTML = arr[i].firstName;
+                // populate the first td with data from the array
+                var id = arr[i].staffCode;
+                // populate the second row with a link
+                cell2.innerHTML = "&nbsp&nbsp&nbsp&nbsp<a href='#'     id='" + id + "' " + " >Staff Detail</a>";
+                // bind this new link to a delete method
+                document.getElementById(id).onclick = getStaffDetails;
+            }
+        }
+
+        function getStaffDetails(e)
+        {
+            //this method will request a specific staff detail from the web api
+            var staffDetailsUrl = staffDeetsurl + e.target.id;
+            staffDeetshttp.onreadystatechange = requestStaffDetail;
+            staffDeetshttp.open("GET", staffDetailsUrl, true);
+            staffDeetshttp.send();
+        
+        }
+
+        function requestStaffDetail() {
+            //this method will request a specific staff members details if the ready state is okay
+            if (staffDeetshttp.readyState == 4 && staffDeetshttp.status == 200) {
+                var staffDetails = JSON.parse(staffDeetshttp.responseText);
+                displayItemsStaffDetails(staffDetails);
+            }
+        }
+        //this method will display a staff members details in a list, which has been formattefdd
+        //using the method
+        function displayItemsStaffDetails(arr) {
+
+            // grab hold of the table object
+            document.getElementById("detail").style.visibility = "visible";
+            var table = document.getElementById("staffDeetslist");
+            table.style.visibility = "visible";
+
+            // Empty the table tag
+            table.innerHTML = "";
+
+            var row = table.insertRow(0);
+            var cell1 = row.insertCell(0);
+            cell1.innerHTML = "firstName " + arr.firstName;
+
+            var nextRow1 = table.insertRow(1);
+            var cell2 = nextRow1.insertCell(0);
+            cell2.innerHTML = "middleName " + arr.middleName;
+
+            var nextRow2 = table.insertRow(2);
+            var cell3 = nextRow2.insertCell(0);
+            cell3.innerHTML = "lastName " + arr.lastName;
+
+            var nextRow3 = table.insertRow(3);
+            var cell4 = nextRow3.insertCell(0);
+            cell4.innerHTML = "dob " + arr.dob;
+
+            var nextRow4 = table.insertRow(4);
+            var cell5 = nextRow4.insertCell(0);
+            cell5.innerHTML = "profile " + arr.profile;
+
+            var nextRow5 = table.insertRow(5);
+            var cell6 = nextRow5.insertCell(0);
+            cell6.innerHTML = "emailAddress " + arr.emailAddress;
+        }
+
+
+        window.onload = start;
+
+
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Application name</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+
+
+
+        <div class="jumbotron">
+            <h1>ASP.NET</h1>
+            <p class="lead">This SPA uses raw dirty JavaScript to demo the relationship between Javascript and Http</p>
+            <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <h2>Our Business Units</h2>
+                <table id="bulist"></table>
+               
+            </div>
+            <div class="col-md-4">
+               
+                    <h2 id="detaillist">Staff List</h2>
+                    <table id="stafflist"></table>
+               
+             </div>
+            <div class="col-md-4">
+                <div id="detail">
+                    <h2>Staff Detail</h2>
+                    <table id="staffDeetslist"></table>
+                    </div>
+                </div>
+            </div>
+
+        <hr />
+        <footer>
+            <p>&copy; 2015 - My ASP.NET Application</p>
+        </footer>
+
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+</div>
+
+
+
+
+</body>
+</html>
